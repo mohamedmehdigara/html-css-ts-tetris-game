@@ -12,6 +12,7 @@ body {
 /* Game container styling */
 #game-container {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
@@ -26,12 +27,13 @@ body {
     position: relative;
     overflow: hidden;
     background-color: #fff;
+    border-radius: 5px;
 }
 
 /* Next piece display styling */
 #next-piece {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border: 2px solid #333;
     padding: 10px;
     display: flex;
@@ -39,15 +41,16 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #fff;
+    border-radius: 5px;
 }
 
 /* Next board styling */
 #next-board {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     display: grid;
-    grid-template-columns: repeat(4, 10px);
-    grid-template-rows: repeat(4, 10px);
+    grid-template-columns: repeat(4, 15px);
+    grid-template-rows: repeat(4, 15px);
 }
 
 /* Game info section styling */
@@ -70,7 +73,7 @@ body {
 }
 
 /* Start button styling */
-#start-button {
+#start-button, #pause-button, #restart-button {
     padding: 10px 20px;
     font-size: 16px;
     border: none;
@@ -81,8 +84,58 @@ body {
     transition: background-color 0.3s;
 }
 
-#start-button:hover {
+#start-button:hover, #pause-button:hover, #restart-button:hover {
     background-color: #45a049;
+}
+
+/* Pause button styling */
+#pause-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#pause-button:hover {
+    background-color: #0056b3;
+}
+
+/* Game over notification styling */
+#game-over {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 10px;
+    display: none;
+    text-align: center;
+}
+
+#game-over h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#restart-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #FF4500;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#restart-button:hover {
+    background-color: #d33b00;
 }
 
 /* Cell styling */
@@ -105,13 +158,31 @@ body {
     background-color: blue;
 }
 
-/* Add additional cell colors for other tetrimino types */
-/* Example: .cell.orange { background-color: orange; } */
+.cell.yellow {
+    background-color: yellow;
+}
+
+.cell.red {
+    background-color: red;
+}
+
+.cell.green {
+    background-color: green;
+}
+
+.cell.purple {
+    background-color: purple;
+}
+
+.cell.orange {
+    background-color: orange;
+}
 
 /* Enhancements:
-- Increased the border thickness of the game board and next piece display.
-- Added padding to the next piece display.
-- Styled the score display and start button with appropriate colors, font sizes, and effects.
-- Styled the cells with class names for colors (e.g., cyan, blue) to facilitate easy differentiation of tetrimino types.
-- Added hover effect on the start button for better user feedback.
+- Added hover effects to buttons for better user feedback.
+- Enhanced button styling with a consistent border-radius and padding.
+- Styled the game over notification, including restart button.
+- Improved next piece display with a border and size adjustments.
+- Adjusted cell colors to differentiate tetrimino types.
+- Used consistent sizes and colors across different elements for a cohesive look.
 */

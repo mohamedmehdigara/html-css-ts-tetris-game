@@ -3,6 +3,9 @@
 <head>
     <title>Tetris Game</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Add meta tags for better responsiveness and accessibility -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
 </head>
 <body>
     <!-- Main game board -->
@@ -23,12 +26,23 @@
             <h2>Score</h2>
             <p id="score-value">0</p>
         </div>
-        
-        <!-- Start button -->
-        <button id="start-button">Start Game</button>
+
+        <!-- Game controls -->
+        <div id="game-controls">
+            <!-- Start button -->
+            <button id="start-button">Start Game</button>
+            <!-- Pause button -->
+            <button id="pause-button">Pause</button>
+        </div>
     </div>
 
-    <!-- Script files -->
+    <!-- Game over notification -->
+    <div id="game-over" style="display: none;">
+        <h1>Game Over!</h1>
+        <button id="restart-button">Restart Game</button>
+    </div>
+
+    <!-- Script file -->
     <script src="app.js" defer></script>
 </body>
 </html>
