@@ -14,12 +14,14 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    max-width: 600px; /* Restrict width for better responsiveness */
+    padding: 10px;
 }
 
 /* Game board styling */
 #game-board {
     display: grid;
-    width: 200px;  /* Width of the Tetris board */
+    width: 200px; /* Width of the Tetris board */
     height: 400px; /* Height of the Tetris board */
     grid-template-columns: repeat(10, 20px);
     grid-template-rows: repeat(20, 20px);
@@ -42,6 +44,8 @@ body {
     align-items: center;
     background-color: #fff;
     border-radius: 5px;
+    /* Add drop shadow for visual appeal */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Next board styling */
@@ -70,38 +74,48 @@ body {
     font-size: 24px;
     font-weight: bold;
     color: #333;
+    /* Add a background for score display */
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #e0e0e0;
 }
 
-/* Start button styling */
-#start-button, #pause-button, #restart-button {
+/* Button styling for all game control buttons */
+button {
     padding: 10px 20px;
     font-size: 16px;
     border: none;
-    background-color: #4CAF50;
-    color: white;
     border-radius: 5px;
+    color: white;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-#start-button:hover, #pause-button:hover, #restart-button:hover {
+/* Start button styling */
+#start-button {
+    background-color: #4CAF50; /* Green */
+}
+
+#start-button:hover {
     background-color: #45a049;
 }
 
 /* Pause button styling */
 #pause-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background-color: #007BFF; /* Blue */
 }
 
 #pause-button:hover {
     background-color: #0056b3;
+}
+
+/* Resume button styling */
+#resume-button {
+    background-color: #FFA500; /* Orange */
+}
+
+#resume-button:hover {
+    background-color: #d17a00;
 }
 
 /* Game over notification styling */
@@ -116,6 +130,7 @@ body {
     border-radius: 10px;
     display: none;
     text-align: center;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 #game-over h1 {
@@ -124,14 +139,7 @@ body {
 }
 
 #restart-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    background-color: #FF4500;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background-color: #FF4500; /* Red-orange */
 }
 
 #restart-button:hover {
@@ -177,12 +185,3 @@ body {
 .cell.orange {
     background-color: orange;
 }
-
-/* Enhancements:
-- Added hover effects to buttons for better user feedback.
-- Enhanced button styling with a consistent border-radius and padding.
-- Styled the game over notification, including restart button.
-- Improved next piece display with a border and size adjustments.
-- Adjusted cell colors to differentiate tetrimino types.
-- Used consistent sizes and colors across different elements for a cohesive look.
-*/

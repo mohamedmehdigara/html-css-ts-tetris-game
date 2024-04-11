@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Tetris Game</title>
     <link rel="stylesheet" href="style.css">
@@ -7,11 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
 </head>
+
 <body>
-    <!-- Main game board -->
+    <!-- Main game container -->
     <div id="game-container">
+        <!-- Main game board -->
         <div id="game-board"></div>
-        
+
         <!-- Display for the next piece -->
         <div id="next-piece">
             <h2>Next</h2>
@@ -19,7 +22,7 @@
         </div>
     </div>
 
-    <!-- Game controls and info -->
+    <!-- Game controls and information -->
     <div id="game-info">
         <!-- Score display -->
         <div id="score">
@@ -27,12 +30,14 @@
             <p id="score-value">0</p>
         </div>
 
-        <!-- Game controls -->
+        <!-- Game control buttons -->
         <div id="game-controls">
             <!-- Start button -->
             <button id="start-button">Start Game</button>
             <!-- Pause button -->
-            <button id="pause-button">Pause</button>
+            <button id="pause-button" disabled>Pause</button>
+            <!-- Resume button -->
+            <button id="resume-button" style="display: none;">Resume</button>
         </div>
     </div>
 
@@ -42,7 +47,8 @@
         <button id="restart-button">Restart Game</button>
     </div>
 
-    <!-- Script file -->
-    <script src="app.js" defer></script>
+    <!-- JavaScript file -->
+    <script src="app.ts" defer></script>
 </body>
+
 </html>
