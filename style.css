@@ -1,0 +1,117 @@
+/* General body styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Game container styling */
+#game-container {
+    display: flex;
+    gap: 20px;
+}
+
+/* Game board styling */
+#game-board {
+    display: grid;
+    width: 200px;  /* Width of the Tetris board */
+    height: 400px; /* Height of the Tetris board */
+    grid-template-columns: repeat(10, 20px);
+    grid-template-rows: repeat(20, 20px);
+    border: 2px solid #333;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+/* Next piece display styling */
+#next-piece {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #333;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+/* Next board styling */
+#next-board {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 10px);
+    grid-template-rows: repeat(4, 10px);
+}
+
+/* Game info section styling */
+#game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Score styling */
+#score {
+    text-align: center;
+}
+
+#score-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Start button styling */
+#start-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#start-button:hover {
+    background-color: #45a049;
+}
+
+/* Cell styling */
+.cell {
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Cell coloring */
+.cell.cyan {
+    background-color: cyan;
+}
+
+.cell.blue {
+    background-color: blue;
+}
+
+/* Add additional cell colors for other tetrimino types */
+/* Example: .cell.orange { background-color: orange; } */
+
+/* Enhancements:
+- Increased the border thickness of the game board and next piece display.
+- Added padding to the next piece display.
+- Styled the score display and start button with appropriate colors, font sizes, and effects.
+- Styled the cells with class names for colors (e.g., cyan, blue) to facilitate easy differentiation of tetrimino types.
+- Added hover effect on the start button for better user feedback.
+*/
