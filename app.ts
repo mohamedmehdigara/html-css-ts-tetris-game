@@ -1,19 +1,4 @@
 // Constants and variables
-const gameBoard = document.getElementById('game-board') as HTMLElement;
-const nextBoard = document.getElementById('next-board') as HTMLElement;
-const startButton = document.getElementById('start-button') as HTMLElement;
-const pauseButton = document.createElement('button');
-pauseButton.id = 'pause-button';
-pauseButton.innerText = 'Pause';
-const restartButton = document.createElement('button');
-restartButton.id = 'restart-button';
-restartButton.innerText = 'Restart';
-const scoreValue = document.getElementById('score-value') as HTMLElement;
-const gameOverElement = document.createElement('div');
-gameOverElement.id = 'game-over';
-gameOverElement.innerHTML = '<h1>Game Over!</h1>';
-gameOverElement.appendChild(restartButton);
-document.body.appendChild(gameOverElement);
 const cols = 10;
 const rows = 20;
 const blockSize = 20;
@@ -23,7 +8,6 @@ const gameSpeed = 500; // Speed of game loop (ms)
 let gameInterval: ReturnType<typeof setInterval>;
 let isGameOver = false;
 let isGameRunning = false;
-let isPaused = false;
 let score = 0;
 
 // Tetrimino shapes and colors
@@ -41,41 +25,7 @@ const tetriminos: Tetrimino[] = [
         ],
         color: 'blue'
     },
-    {
-        shape: [
-            [0, 1, 0],
-            [1, 1, 1]
-        ],
-        color: 'yellow'
-    },
-    {
-        shape: [
-            [1, 1],
-            [1, 1]
-        ],
-        color: 'red'
-    },
-    {
-        shape: [
-            [0, 1, 1],
-            [1, 1, 0]
-        ],
-        color: 'green'
-    },
-    {
-        shape: [
-            [1, 1, 0],
-            [0, 1, 1]
-        ],
-        color: 'purple'
-    },
-    {
-        shape: [
-            [0, 0, 1],
-            [1, 1, 1]
-        ],
-        color: 'orange'
-    }
+    // Add other Tetrimino shapes and colors here...
 ];
 
 // Game board representation
@@ -96,88 +46,66 @@ function init() {
     renderNextBoard();
     addEventListeners();
     updateScore(0);
-    hideGameOverElement();
 }
 
 // Initialize the game board
 function initializeGameBoard() {
-    gameBoard.innerHTML = '';
+    $('#game-board').empty();
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-            const cell = document.createElement('div');
-            cell.style.width = `${blockSize}px`;
-            cell.style.height = `${blockSize}px`;
-            cell.classList.add('cell');
-            gameBoard.appendChild(cell);
+            const cell = $('<div>').addClass('cell').css({
+                width: `${blockSize}px`,
+                height: `${blockSize}px`
+            });
+            $('#game-board').append(cell);
         }
     }
 }
 
 // Initialize the next piece board
 function initNextBoard() {
-    nextBoard.innerHTML = '';
+    $('#next-board').empty();
     const nextBoardSize = 4;
     for (let r = 0; r < nextBoardSize; r++) {
         for (let c = 0; c < nextBoardSize; c++) {
-            const cell = document.createElement('div');
-            cell.style.width = `${blockSize / 2}px`;
-            cell.style.height = `${blockSize / 2}px`;
-            cell.classList.add('cell');
-            nextBoard.appendChild(cell);
+            const cell = $('<div>').addClass('cell').css({
+                width: `${blockSize / 2}px`,
+                height: `${blockSize / 2}px`
+            });
+            $('#next-board').append(cell);
         }
     }
 }
 
 // Render the game board
-// Render the game board
 function renderBoard() {
-    const cells = Array.from(gameBoard.children) as HTMLElement[];
-    // Render the static board based on the `board` array
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             const cellIndex = r * cols + c;
-            const cell = cells[cellIndex];
+            const cell = $('#game-board .cell').eq(cellIndex);
             const blockColor = board[r][c];
-            if (blockColor !== null) {
-                cell.className = `cell ${blockColor}`;
+            if (blockColor) {
+                cell.css('background-color', blockColor);
             } else {
-                cell.className = 'cell';
+                cell.css('background-color', '');
             }
         }
     }
-
-    // Render the current Tetrimino if it exists
-    if (currentTetrimino !== null) {
-        const shape = currentTetrimino.shape;
-        const color = currentTetrimino.color;
-
-        shape.forEach((row, rowIndex) => {
-            row.forEach((cellValue, colIndex) => {
-                if (cellValue === 1) {
-                    const cellIndex = (currentPos.y + rowIndex) * cols + (currentPos.x + colIndex);
-                    cells[cellIndex].className = `cell ${color}`;
-                }
-            });
-        });
-    }
 }
-
 
 // Render the next piece board
 function renderNextBoard() {
-    const nextCells = Array.from(nextBoard.children) as HTMLElement[];
+    const nextCells = $('#next-board .cell');
     const shape = nextTetrimino.shape;
     const color = nextTetrimino.color;
-    nextCells.forEach(cell => {
-        cell.className = 'cell';
-    });
+    nextCells.removeClass().addClass('cell');
 
     shape.forEach((row, rowIndex) => {
         row.forEach((cellValue, colIndex) => {
             if (cellValue === 1) {
                 const cellIndex = rowIndex * 4 + colIndex;
-                const cell = nextCells[cellIndex];
-                cell.className = `cell ${color}`;
+                const cell = nextCells.eq(cellIndex);
+                cell.addClass(color);
             }
         });
     });
@@ -185,15 +113,13 @@ function renderNextBoard() {
 
 // Spawn a random tetrimino
 function spawnTetrimino() {
-    const randomIndex = Math.floor(Math.random() * tetriminos.length);
-    currentTetrimino = tetriminos[randomIndex];
+    currentTetrimino = nextTetrimino;
     currentPos = { x: 4, y: 0 };
-    // Check if spawning the Tetrimino in this position is valid
+    spawnNextTetrimino();
     if (!isPositionValid()) {
-        endGame(); // End the game if it's not a valid position
+        endGame();
     }
 }
-
 
 // Spawn the next tetrimino piece
 function spawnNextTetrimino() {
@@ -221,17 +147,17 @@ function isPositionValid() {
 }
 
 // Handle keypresses
-function handleKeyPress(event: KeyboardEvent) {
-    if (!isGameRunning || isGameOver) return;
+function handleKeyPress(event: JQuery.KeyDownEvent) {
+    if (isGameOver || !isGameRunning) return;
 
     if (event.key === 'ArrowLeft') {
-        moveTetrimino(-1, 0); // Move left
+        moveTetrimino(-1, 0);
     } else if (event.key === 'ArrowRight') {
-        moveTetrimino(1, 0); // Move right
+        moveTetrimino(1, 0);
     } else if (event.key === 'ArrowDown') {
-        moveTetrimino(0, 1); // Move down
+        moveTetrimino(0, 1);
     } else if (event.key === 'ArrowUp') {
-        rotateTetrimino(); // Rotate
+        rotateTetrimino();
     }
 }
 
@@ -240,30 +166,27 @@ function moveTetrimino(dx: number, dy: number) {
     currentPos.x += dx;
     currentPos.y += dy;
 
-    // Check if the new position is invalid
     if (!isPositionValid()) {
-        // Revert the movement if it's not valid
         currentPos.x -= dx;
         currentPos.y -= dy;
     } else {
-        renderBoard(); // Update the board to reflect the new position
+        renderBoard();
     }
 }
 
 // Rotate the current tetrimino
 function rotateTetrimino() {
-    // Rotate the current Tetrimino
-    const { shape } = currentTetrimino;
-    const rotatedShape = shape[0].map((_, index) => shape.map(row => row[index]).reverse());
+    const shape = currentTetrimino.shape;
+    const rotatedShape = shape[0].map((_, index) =>
+        shape.map(row => row[index]).reverse()
+    );
     const originalShape = currentTetrimino.shape;
     currentTetrimino.shape = rotatedShape;
 
-    // Check if the new position is invalid
     if (!isPositionValid()) {
-        // Revert the rotation if it's not valid
         currentTetrimino.shape = originalShape;
     } else {
-        renderBoard(); // Update the board to reflect the new rotation
+        renderBoard();
     }
 }
 
@@ -303,76 +226,46 @@ function clearFullLines() {
 function updateScore(linesCleared: number) {
     const scoreMapping = [0, 100, 300, 500, 800];
     score += scoreMapping[linesCleared];
-    scoreValue.textContent = score.toString();
+    $('#score-value').text(score.toString());
 }
 
 // Game loop to handle piece movement
 function gameLoop() {
-    if (!isGameOver) {
+    if (isGameRunning && !isGameOver) {
         moveTetrimino(0, 1);
-        // Check if the new position is invalid
         if (!isPositionValid()) {
-            // Move it back and place it on the board
             currentPos.y--;
             placeTetrimino();
-            spawnTetrimino();
         }
     }
 }
-
 
 // End the game
 function endGame() {
     isGameOver = true;
     isGameRunning = false;
-    isPaused = false;
     clearInterval(gameInterval);
-    displayGameOver();
-}
-
-// Display the game over element
-function displayGameOver() {
-    gameOverElement.style.display = 'block';
-}
-
-// Hide the game over element
-function hideGameOverElement() {
-    gameOverElement.style.display = 'none';
+    $('#game-over').show();
 }
 
 // Start or resume the game
-// Start the game loop
 function startGame() {
-    if (!isGameRunning) {
+    if (isGameOver) {
+        resetGame();
+    } else {
         isGameRunning = true;
         gameInterval = setInterval(gameLoop, gameSpeed);
     }
-}
-
-// Add event listener to the start button
-
-// Pause the game
-function pauseGame() {
-    isPaused = true;
-    clearInterval(gameInterval);
-    pauseButton.innerText = 'Resume';
-}
-
-// Resume the game
-function resumeGame() {
-    isPaused = false;
-    gameInterval = setInterval(gameLoop, gameSpeed);
-    pauseButton.innerText = 'Pause';
 }
 
 // Reset the game
 function resetGame() {
     isGameOver = false;
     isGameRunning = true;
-    isPaused = false;
     score = 0;
     updateScore(0);
-    
+    currentTetrimino = null;
+    nextTetrimino = null;
     currentPos = { x: 4, y: 0 };
     for (let r = 0; r < rows; r++) {
         board[r].fill(null);
@@ -382,16 +275,12 @@ function resetGame() {
     renderBoard();
     renderNextBoard();
     gameInterval = setInterval(gameLoop, gameSpeed);
-    hideGameOverElement();
 }
 
 // Event listener for keypresses
 function addEventListeners() {
-    document.addEventListener('keydown', handleKeyPress);
-    startButton.addEventListener('click', startGame);
-    pauseButton.addEventListener('click', startGame);
-    restartButton.addEventListener('click', resetGame);
-    document.getElementById('game-info')!.appendChild(pauseButton);
+    $(document).keydown(handleKeyPress);
+    $('#start-button').click(startGame);
 }
 
 // Initialize the game
